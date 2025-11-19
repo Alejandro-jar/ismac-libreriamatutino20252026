@@ -4,9 +4,7 @@ import com.distribuida.model.Cliente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ClienteTest {
 
@@ -43,8 +41,8 @@ public class ClienteTest {
         cliente.setIdCliente(2);
         cliente.setCedula("1700000552");
         cliente.setNombre("Tomas");
-        cliente.getApellido("Rojas");
-        cliente.getDireccion("calle2");
+        cliente.setApellido("Rojas");
+        cliente.setDireccion("calle2");
         cliente.setTelefono("0995558882");
         cliente.setCorreo("correo@correo2");
 
@@ -58,7 +56,20 @@ public class ClienteTest {
                 () -> assertEquals("correo@correo2", cliente.getCorreo())
         );
     }
+    @Test
+    public void testClienteToString(){
 
+        String str = cliente.toString();
+        assertAll("Validar datos del cliente en toString",
+                () -> assertTrue(str.contains("1")),
+                () -> assertTrue(str.contains("1726692310")),
+                () -> assertTrue(str.contains("Victor")),
+                () -> assertTrue(str.contains("Guiña")),
+                () -> assertTrue(str.contains("Calle callada")),
+                () -> assertTrue(str.contains("0996401766")),
+                () -> assertTrue(str.contains("correo@correo.com"))
+                );
+    }
 
 
 }
