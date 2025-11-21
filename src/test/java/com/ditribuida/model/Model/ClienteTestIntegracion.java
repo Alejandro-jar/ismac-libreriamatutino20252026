@@ -1,0 +1,40 @@
+package com.ditribuida.model.Model;
+
+import com.distribuida.dao.ClienteDao;
+import com.distribuida.model.Cliente;
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
+
+import java.util.List;
+
+@DataJpaTest
+@AutoConfigureTestDatabase(replace =  AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
+@Rollback(value = false)
+public class ClienteTestIntegracion {
+
+    @Autowired
+    public ClienteDao clienteDao;
+
+    @Test
+    public void findAll(){
+        List<Cliente> clientes = clienteDao.findAll();
+        for(Cliente item: clientes){
+            System.out.println(item.toString());
+        }
+    }
+    @Test
+    public void findAll(){
+        Cliente cliente = clienteDao.findById(1);
+        System.out.println(cliente.toString());
+    }
+
+    @Test
+    public void save(){
+        Cliente cliente = new Cliente(0, "123456789","juan","Taipe","Av. Cerca","0987654321", "correo@gmail.com")
+    }
+}

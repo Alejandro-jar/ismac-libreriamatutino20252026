@@ -1,4 +1,4 @@
-package com.ditribuida.model;
+package com.ditribuida.model.Model;
 
 import com.distribuida.model.Cliente;
 import org.junit.jupiter.api.BeforeEach;
