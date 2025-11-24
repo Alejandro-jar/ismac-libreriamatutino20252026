@@ -1,6 +1,5 @@
-package com.ditribuida.model.Model;
+package com.distribuida.dao;
 
-import com.distribuida.dao.ClienteDao;
 import com.distribuida.model.Cliente;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -10,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace =  AutoConfigureTestDatabase.Replace.NONE)
@@ -28,13 +28,13 @@ public class ClienteTestIntegracion {
         }
     }
     @Test
-    public void findAll(){
-        Cliente cliente = clienteDao.findById(1);
+    public void findOne(){
+        Optional<Cliente> cliente = clienteDao.findById(1);
         System.out.println(cliente.toString());
     }
 
     @Test
     public void save(){
-        Cliente cliente = new Cliente(0, "123456789","juan","Taipe","Av. Cerca","0987654321", "correo@gmail.com")
+        Cliente cliente = new Cliente(0, "123456789","juan","Taipe","Av. Cerca","0987654321", "correo@gmail.com");
     }
 }
