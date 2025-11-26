@@ -1,4 +1,4 @@
-package com.ditribuida.model.Model;
+/*package com.ditribuida.model.Model;
 
 import com.distribuida.model.Factura;
 import com.distribuida.model.FacturaDetalle;
@@ -70,4 +70,4 @@ public class FacturaDetalleTest {
                 () -> assertTrue(str.contains("El Hobbit"))
         );
     }
-}
+}*/

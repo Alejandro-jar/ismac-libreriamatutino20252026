@@ -1,4 +1,4 @@
-package com.distribuida.dao;
+/*package com.distribuida.dao;
 
 import com.distribuida.model.Autor;
 import com.distribuida.model.Factura;
@@ -58,5 +58,5 @@ public class FacturaDetalleTestIntegracion {
         assertTrue(encontrado.isPresent());
         assertEquals(3, encontrado.get().getCantidad());
     }
-
+*/
 

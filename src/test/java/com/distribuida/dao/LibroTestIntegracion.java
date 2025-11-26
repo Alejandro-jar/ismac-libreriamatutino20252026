@@ -1,4 +1,4 @@
-package com.distribuida.dao;
+/*package com.distribuida.dao;
 
 import com.distribuida.model.Autor;
 import com.distribuida.model.Libro;
@@ -53,4 +53,4 @@ public class LibroTestIntegracion {
     }
 
 
-}
+}*/

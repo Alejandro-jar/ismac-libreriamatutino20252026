@@ -1,4 +1,4 @@
-package com.distribuida.model;
+/*package com.distribuida.model;
 
 import jakarta.persistence.*;
 
@@ -82,11 +82,11 @@ public class FacturaDetalle {
         return null;
     }
 
-    public Optional<FacturaDetalle> findById(Integer idDetalle) {
-    }
+    //public Optional<FacturaDetalle> findById(Integer idDetalle) {
+    //}
 
     public FacturaDetalle save(FacturaDetalle detalle) {
 
 
     }
-}
+}*/

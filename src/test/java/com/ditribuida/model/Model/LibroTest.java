@@ -52,7 +52,7 @@ public class LibroTest {
                 () -> assertEquals("Rayuela", libro.getTitulo()),
                 () -> assertEquals(32.99, libro.getPrecio()),
                 () -> assertEquals(20, libro.getStock()),
-                () -> assertEquals("Cortázar", libro.getAutor().getApellido()),
+                () -> assertEquals("Cortázar", libro.getAutor().getApellido())
         );
     }
 
