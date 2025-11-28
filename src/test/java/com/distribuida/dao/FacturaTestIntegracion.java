@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
@@ -30,18 +32,27 @@ public class FacturaTestIntegracion {
     @Test
     public void testFacturaFindAll(){
         List<Factura> facturas = facturaDao.findAll();
+        assertNotNull(facturas);
+        assertTrue(facturas.size()>0);
         facturas.forEach(System.out::println);
     }
 
     @Test
     public void testFacturaFindOne(){
         Optional<Factura> factura = facturaDao.findById(1);
+        assertTrue(factura.isPresent());
+        assertEquals("FAC-0001", factura.orElse(null).getNumFactura());
+        //assertEquals("150.96", factura.orElse(null).getTotal());
         System.out.println(factura.toString());
+
+        //150.96 no reconoce 2 cifras decimales - validar metodos de precision decimal -
     }
     
     @Test
     public void testFacturaSave(){
           Optional<Cliente> cliente = clienteDao.findById(1);
+
+          assertTrue(cliente.isPresent());
 
           Factura factura = new Factura();
           factura.setIdFactura(0);
@@ -52,13 +63,23 @@ public class FacturaTestIntegracion {
           factura.setTotal(115.00);
           factura.setCliente(cliente.orElse(null));
 
-          facturaDao.save(factura);
+          Factura facturaguardada = facturaDao.save(factura);
+          assertNotNull(facturaguardada);
+          assertEquals("FAC-00066", facturaguardada.getNumFactura());
+          assertEquals("100.0", facturaguardada.getTotalNeto());
+
       }
 
       @Test
     public void testFacturaUpdate(){
         Optional<Cliente> cliente = clienteDao.findById(2);
-        Optional<Factura> factura = facturaDao.findById(86);
+
+        assertTrue(cliente.isPresent());
+
+        Optional<Factura> factura = facturaDao.findById(87);
+
+        assertTrue(factura.isPresent());
+
         factura.orElse(null).setNumFactura("FAC-00077");
         factura.orElse(null).setFecha(new Date());
         factura.orElse(null).setTotalNeto(200.00);
@@ -67,11 +88,20 @@ public class FacturaTestIntegracion {
         factura.orElse(null).setTotalNeto(200.00);
         factura.orElse(null).setCliente(cliente.orElse(null));
 
-        facturaDao.save(factura.orElse(null));
+        Factura facturaActualizada = facturaDao.save(factura.orElse(null));
+
+        assertEquals("FAC-00077", facturaActualizada.getNumFactura());
+        assertEquals("200", facturaActualizada.getNumFactura());
+        assertEquals("Juan", facturaActualizada.getCliente().getNombre());
+
+
     }
 
     @Test
     public void testFacturaDelete(){
-        facturaDao.deleteById(86);
+        if (facturaDao.existsById(87)){
+            facturaDao.deleteById(87);
+        }
+        assertFalse(facturaDao.existsById(87), "El dato fue eliminado");
     }
 }
