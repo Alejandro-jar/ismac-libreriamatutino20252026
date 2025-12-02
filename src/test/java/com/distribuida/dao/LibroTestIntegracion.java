@@ -1,4 +1,4 @@
-/*package com.distribuida.dao;
+package com.distribuida.dao;
 
 import com.distribuida.model.Autor;
 import com.distribuida.model.Libro;
@@ -49,8 +49,7 @@ public class LibroTestIntegracion {
         autorDao.save(new Autor(null, "Mario", "Vargas Llosa", "Peruana"));
 
         libroDao.save(new Libro(null, "La Ciudad y los Perros", 15.00, 30,
-                autorDao.findAll().get(0);
+                autorDao.findAll().get(0)));
     }
 
-
-}*/
+}

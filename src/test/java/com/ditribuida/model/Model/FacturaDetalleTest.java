@@ -1,4 +1,4 @@
-/*package com.ditribuida.model.Model;
+package com.ditribuida.model.Model;
 
 import com.distribuida.model.Factura;
 import com.distribuida.model.FacturaDetalle;
@@ -17,7 +17,7 @@ public class FacturaDetalleTest {
     @BeforeEach
     public void setup() {
 
-        libro = new Libro(1, "El Hobbit", 19.99, 10, null, null);
+        libro = new Libro(1, "El Hobbit", 19.99, 10, null);
         factura = new Factura(1, "FAC-0001", new java.util.Date(), 100.0, 12.0, 112.0, null);
 
         detalle = new FacturaDetalle();
@@ -40,7 +40,7 @@ public class FacturaDetalleTest {
 
     @Test
     public void testDetalleSetters() {
-        libro = new Libro(2, "1984", 15.50, 5, null, null);
+        libro = new Libro(2, "1984", 15.50, 5, null);
         factura = new Factura(2, "FAC-0002", new java.util.Date(), 200.0, 24.0, 224.0, null);
 
         detalle = new FacturaDetalle();
@@ -70,4 +70,4 @@ public class FacturaDetalleTest {
                 () -> assertTrue(str.contains("El Hobbit"))
         );
     }
-}*/
+}

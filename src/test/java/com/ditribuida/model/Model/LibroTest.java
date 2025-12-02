@@ -62,7 +62,7 @@ public class LibroTest {
         assertAll("Validar toString Libro",
                 () -> assertTrue(str.contains("Cien años de soledad")),
                 () -> assertTrue(str.contains("Gabriel")),
-                () -> assertTrue(str.contains("Realismo mágico"))
+                () -> assertTrue(str.contains("Colombiana"))
         );
     }
 }
