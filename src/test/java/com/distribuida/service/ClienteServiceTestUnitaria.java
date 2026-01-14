@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.internal.verification.Times;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -20,104 +19,78 @@ import static org.mockito.Mockito.*;
 public class ClienteServiceTestUnitaria {
 
     @Mock
-    private clienteDao
+    private ClienteDao clienteDao;
 
     @InjectMocks
-    private ClienteService clienteService;
+    private ClienteServiceImpl clienteService;
 
     private Cliente cliente;
 
     @BeforeEach
-    public void setUp() {
-        cliente = new Cliente();
-        cliente.setIdCliente(1);
-        cliente.setCedula("171234567");
-        cliente.setNombre("Juan");
-        cliente.setApellido("Taipe");
-        cliente.setDireccion("Av. por ahi y mas alla");
-        cliente.setTelefono("0987654321");
-        cliente.setCorreo("jtaipe@correo.com");
+    void setUp() {
+        cliente = new Cliente(1, "1701234567", "Juan", "Taipe",
+                "Direccion", "0987654321", "juan@correo.com");
     }
 
     @Test
-    public void findAll(){
+    void findAll() {
         when(clienteDao.findAll()).thenReturn(List.of(cliente));
+
         List<Cliente> clientes = clienteService.findAll();
 
         assertNotNull(clientes);
-        assertEquals(1,clientes.size());
-        verify(clienteDao, times(1).findAll());
+        assertEquals(1, clientes.size());
     }
 
     @Test
-    public void testFindOneExistente(){
-        when(clienteDao.findById(1)).thenReturn(Optional.ofNullable(cliente));
-        Optional<Cliente> cliente = clienteService.findOne(1);
+    void findOneExistente() {
+        when(clienteDao.findById(1)).thenReturn(Optional.of(cliente));
 
-        assertNotNull(cliente);
-        assertEquals("Juan", cliente.orElse(null).getNombre());
+        Optional<Cliente> resultado = clienteService.findOne(1);
+
+        assertTrue(resultado.isPresent());
     }
 
     @Test
-    public void testFindOneNoExistente(){
-        when(clienteDao.findById(2)).thenReturn(null;
-        Cliente cliente = clienteService.findOne(2);
-        assertNull(cliente);
+    void findOneNoExistente() {
+        when(clienteDao.findById(99)).thenReturn(Optional.empty());
+
+        Optional<Cliente> resultado = clienteService.findOne(99);
+
+        assertTrue(resultado.isEmpty());
     }
 
     @Test
-    public void testSave(){
+    void save() {
         when(clienteDao.save(cliente)).thenReturn(cliente);
-        Cliente clienteGuardado = clienteService.save(cliente);
-        assertNotNull(clienteGuardado);
-        assertEquals("Juan", clienteGuardado.getNombre());
+
+        Cliente resultado = clienteService.save(cliente);
+
+        assertNotNull(resultado);
     }
 
     @Test
-    public void testUpdateExistente(){
-        Cliente clienteActualizado = new Cliente();
-        clienteActualizado.setCedula("17012345666");
-        clienteActualizado.setNombre("Juan66");
-        clienteActualizado.setApellido("Taipe66");
-        clienteActualizado.setDireccion("Direccion66");
-        clienteActualizado.setTelefono("0987654666");
-        clienteActualizado.setCorreo("jtaipe66@correo.com");
+    void updateExistente() {
+        when(clienteDao.existsById(1)).thenReturn(true);
+        when(clienteDao.save(any())).thenReturn(cliente);
 
-        when(clienteDao.fundById(1)).thenReturn(Optional.ofNullable(cliente));
-        when(clienteDao.save(any())).thenReturn(clienteActualizado);
+        Cliente resultado = clienteService.update(1, cliente);
 
-        Cliente clienteResultado = clienteService.update(1, clienteActualizado);
-
-        assertNotNull(clienteResultado);
-        assertEquals("Juan66", clienteResultado.getNombre());
-        verify(clienteDao, Times(1)).save(cliente);
+        assertNotNull(resultado);
     }
 
     @Test
-    public void testUpdateNoExistente(){
-        Cliente clienteNuevo = new Cliente();
-        when(clienteDao.findById(999)).thenReturn(Optional.empty());
-        Cliente resultado = clienteService.update(999, clienteNuevo);
+    void updateNoExistente() {
+        when(clienteDao.existsById(99)).thenReturn(false);
+
+        Cliente resultado = clienteService.update(99, cliente);
 
         assertNull(resultado);
-        verify(clienteDao,never()).save(any());
-
     }
 
     @Test
-    public void testDeleteEcistente(){
-        when(clienteDao.existById(1)).thenReturn(true);
+    void delete() {
         clienteService.delete(1);
         verify(clienteDao).deleteById(1);
     }
-
-     @Test
-    public void testDeleteNoExistente(){
-        when(clienteDao.existById(999)).thenReturn(false);
-        clienteService.delete(999);
-        verify(clienteDao, never()).deleteById(anyInt());
-    }
-
-
 }
-

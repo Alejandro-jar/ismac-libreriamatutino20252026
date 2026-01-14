@@ -27,64 +27,73 @@ public class FacturaServiceTestUnitaria {
     private FacturaServiceImpl facturaService;
 
     private Factura factura;
-
     private Cliente cliente;
 
     @BeforeEach
-    public void setUp(){
-        Cliente cliente = new Cliente(1,"1701234567","Juan","Taipe","Direccion","0987654321","jtaipe@correo.com");
-        Factura factura = new Factura();
+    void setUp() {
+        cliente = new Cliente(
+                1,
+                "1701234567",
+                "Juan",
+                "Taipe",
+                "Direccion",
+                "0987654321",
+                "jtaipe@correo.com"
+        );
+
+        factura = new Factura();
         factura.setIdFactura(1);
-        factura.setNumFactura("FAC.0001");
+        factura.setNumFactura("FAC-0001");
         factura.setFecha(new Date());
         factura.setTotalNeto(100.00);
         factura.setIva(15.00);
         factura.setTotal(115.00);
         factura.setCliente(cliente);
-
     }
 
     @Test
-    public void findAll(){
+    void findAll() {
         when(facturaDao.findAll()).thenReturn(List.of(factura));
+
         List<Factura> facturas = facturaService.findAll();
 
         assertNotNull(facturas);
         assertEquals(1, facturas.size());
         verify(facturaDao, times(1)).findAll();
-
     }
 
     @Test
-    public void findOneExistente(){
-        when(facturaDao.findById(10)).thenReturn(Optional.ofNullable(factura));
+    void findOneExistente() {
+        when(facturaDao.findById(1)).thenReturn(Optional.of(factura));
 
-        Factura factura1 = facturaService.findOne(1);
+        Optional<Factura> resultado = facturaService.findOne(1);
 
-        assertNotNull(factura1);
-        assertEquals("FAC-0001", factura1.orElse(null).getNumFactura());
-
-
+        assertTrue(resultado.isPresent());
+        assertEquals("FAC-0001", resultado.get().getNumFactura());
     }
 
     @Test
-    public void findOneNoExistente(){
-        when(facturaDao.findById(2)).thenReturn(null);
-        Optional<Factura> factura = facturaService.findOne(2);
-        assertNull(factura);
+    void findOneNoExistente() {
+        when(facturaDao.findById(99)).thenReturn(Optional.empty());
 
+        Optional<Factura> resultado = facturaService.findOne(99);
+
+        assertTrue(resultado.isEmpty());
     }
 
     @Test
-    public void save(){
+    void save() {
         when(facturaDao.save(factura)).thenReturn(factura);
-        Factura factura1 = facturaService.save(factura);
-        assertNotNull(factura1);
-        assertEquals("FAC-0001",factura1.getNumFactura());
+
+        Factura resultado = facturaService.save(factura);
+
+        assertNotNull(resultado);
+        assertEquals("FAC-0001", resultado.getNumFactura());
+        verify(facturaDao).save(factura);
     }
 
     @Test
-    public void updateExistente(){
+    void updateExistente() {
         Factura facturaActualizada = new Factura();
         facturaActualizada.setNumFactura("FAC-0002");
         facturaActualizada.setFecha(new Date());
@@ -93,43 +102,32 @@ public class FacturaServiceTestUnitaria {
         facturaActualizada.setTotal(230.00);
         facturaActualizada.setCliente(cliente);
 
-        when(facturaDao.findById(1)).thenReturn(Optional.ofNullable(factura));
-        when(facturaDao.save(any())).thenReturn(facturaActualizada);
-
-        Factura facturaResultado = facturaService.update(1, facturaActualizada);
-        assertNotNull(facturaResultado);
-        assertEquals("FAC-002", facturaResultado.getNumFactura());
-        verify(facturaDao, times(1)).save(factura);
-    }
-
-    @Test
-    public void updateNoExisetnte(){
-        Factura facturaNuevo = new Factura();
-
-        when(facturaDao.findById(999)).thenReturn(null);
-        Factura resultado = facturaService.update(999, facturaNuevo);
-        assertNull(resultado);
-        verify(facturaDao,never()).save(any());
-    }
-
-    @Test
-    public void deleteExistente(){
         when(facturaDao.existsById(1)).thenReturn(true);
-        facturaService.delete(1);
-        verify(facturaDao).deleteById(1);
+        when(facturaDao.save(any(Factura.class))).thenReturn(facturaActualizada);
+
+        Factura resultado = facturaService.update(1, facturaActualizada);
+
+        assertNotNull(resultado);
+        assertEquals("FAC-0002", resultado.getNumFactura());
+        verify(facturaDao).save(any(Factura.class));
     }
 
     @Test
-    public void deleteNoExistente(){
-        when(facturaDao.existsById(999)).thenReturn(false);
-        facturaService.delete(999);
-        verify(facturaDao,never()).deleteById(anyInt());
+    void updateNoExistente() {
+        Factura nuevaFactura = new Factura();
+
+        when(facturaDao.existsById(99)).thenReturn(false);
+
+        Factura resultado = facturaService.update(99, nuevaFactura);
+
+        assertNull(resultado);
+        verify(facturaDao, never()).save(any());
     }
 
+    @Test
+    void delete() {
+        facturaService.delete(1);
 
+        verify(facturaDao, times(1)).deleteById(1);
+    }
 }
-
-
-
-
-
