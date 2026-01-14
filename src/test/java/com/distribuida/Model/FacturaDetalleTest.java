@@ -1,4 +1,4 @@
-package com.ditribuida.model.Model;
+package com.distribuida.Model;
 
 import com.distribuida.model.Factura;
 import com.distribuida.model.FacturaDetalle;

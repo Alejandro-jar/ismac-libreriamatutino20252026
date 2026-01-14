@@ -1,4 +1,4 @@
-package com.ditribuida.model.Model;
+package com.distribuida.Model;
 
 import com.distribuida.model.Autor;
 import com.distribuida.model.Libro;
